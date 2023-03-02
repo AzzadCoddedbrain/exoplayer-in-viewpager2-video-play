@@ -14,7 +14,7 @@ class NestedRecyclerviewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNestedRecyclerviewBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_nested_recyclerview)
+        setContentView(binding.root)
 
         val list = ArrayList<String>()
 
@@ -25,7 +25,7 @@ class NestedRecyclerviewActivity : AppCompatActivity() {
         list.add("this is test")
         list.add("this is test")
 
-        val adapter = NestedAdapter(list)
+        val adapter = NestedAdapter(list,this)
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         binding.recyclerview.adapter = adapter
 

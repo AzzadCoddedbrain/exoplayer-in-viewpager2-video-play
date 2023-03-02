@@ -3,9 +3,9 @@ package com.mehuljoisar.viewpagersilder
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.*
 import android.widget.LinearLayout
+import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -20,7 +20,7 @@ import com.mehuljoisar.viewpagersilder.model.Video
 class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  videoPreparedListner: OnVideoPreparedListner) :
     RecyclerView.Adapter<VideoAdapter.VideoVideoHolder>() {
 
-    class VideoVideoHolder(var binding: ParentLayoutBinding, var context: Context,var videoPreparedListner: OnVideoPreparedListner) :
+    class VideoVideoHolder(var binding: ParentLayoutBinding, var context: Context,var videoPreparedListner: OnVideoPreparedListner):
         RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var exoPlayer: ExoPlayer
@@ -63,7 +63,6 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
 
         }
 
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoVideoHolder {
@@ -79,7 +78,34 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
     override fun onBindViewHolder(holder: VideoVideoHolder, position: Int) {
         val model = videos[position]
         holder.setVideoPath(model.url)
+        holder.binding.playerview.setOnClickListener(){
+            it.setOnTouchListener(object : View.OnTouchListener {
+                val gestureDetector: GestureDetector = GestureDetector(context, object:
+                    GestureDetector.SimpleOnGestureListener() {
 
+                    override fun onSingleTapUp(e: MotionEvent): Boolean {
+                        super.onSingleTapUp(e)
+
+                        /*if (!player.playWhenReady) {
+                            player.playWhenReady = true
+                        } else {
+                            player.playWhenReady = false
+                        }*/
+
+                        holder.binding.playerview.player!!.playWhenReady = holder.binding.playerview.player!=null
+
+                        return true
+                    }
+                })
+
+                override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+                    if (p1 != null) {
+                        gestureDetector.onTouchEvent(p1)
+                    }
+                    return true
+                }
+            })
+        }
     }
 
     interface OnVideoPreparedListner {
