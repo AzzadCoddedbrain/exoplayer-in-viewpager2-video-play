@@ -80,7 +80,8 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
 
     override fun onBindViewHolder(holder: VideoVideoHolder, @SuppressLint("RecyclerView") position: Int) {
         val model = videos[position]
-        holder.setVideoPath(model.url)
+        holder.setVideoPath(model.url.trim())
+        /*
         holder.binding.playerview.setOnClickListener(){
             it.setOnTouchListener(object : View.OnTouchListener {
                 val gestureDetector: GestureDetector = GestureDetector(context, object:
@@ -89,11 +90,11 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
                     override fun onSingleTapUp(e: MotionEvent): Boolean {
                         super.onSingleTapUp(e)
 
-                        /*if (!player.playWhenReady) {
+                        *//*if (!player.playWhenReady) {
                             player.playWhenReady = true
                         } else {
                             player.playWhenReady = false
-                        }*/
+                        }*//*
                         holder.binding.playerview.player!!.playWhenReady = holder.binding.playerview.player!=null
 
 
@@ -108,7 +109,7 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
                     return true
                 }
             })
-        }
+        }*/
     }
     /*override fun onViewRecycled(holder: VideoVideoHolder) {
         val position: Int = holder.adapterPosition

@@ -1,29 +1,61 @@
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.mehuljoisar.viewpagersilder.R
 import com.mehuljoisar.viewpagersilder.VideoAdapter
 import com.mehuljoisar.viewpagersilder.databinding.NestedLayoutBinding
 import com.mehuljoisar.viewpagersilder.model.Video
+import com.mehuljoisar.viewpagersilder.model.sampleDataModel
 
-class NestedAdapter(var list: ArrayList<String>, var context: Context) : RecyclerView.Adapter<NestedAdapter.VideoHolder>() {
+class NestedAdapter(var list: ArrayList<sampleDataModel>, var context: Context) : RecyclerView.Adapter<NestedAdapter.VideoHolder>() {
 
+
+//    lateinit var adapter: VideoAdapter
+
+//    private val videos = ArrayList<Video>()
 
     lateinit var adapter: VideoAdapter
-
-    private val videos = ArrayList<Video>()
-    private val exoplayerItems= ArrayList<VideoAdapter.ExoplayerItem>()
-
-
+     val exoplayerItems= ArrayList<VideoAdapter.ExoplayerItem>()
 
     class VideoHolder(var binding: NestedLayoutBinding) : RecyclerView.ViewHolder(binding.root)  {
-        fun bind(word: String) {
+
+
+        fun bind(word: String, videolist: ArrayList<Video>) {
             binding.textView.text = word
+//            inti(videolist)
+
+        }
+
+        private fun inti(videolist: ArrayList<Video>) {
+           /* adapter = VideoAdapter(binding.root.context,videolist,object : VideoAdapter.OnVideoPreparedListner{
+                override fun onVideoPrepared(exoPlayerItem: VideoAdapter.ExoplayerItem) {
+                    exoplayerItems.add(exoPlayerItem)
+                }
+            })
+            binding.viewpager2.adapter = adapter
+
+            binding.viewpager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    val previesIndex = exoplayerItems.indexOfFirst { it.exoplayer.isPlaying }
+                    if (previesIndex != -1){
+                        val player = exoplayerItems[previesIndex].exoplayer
+                        player.pause()
+                        player.playWhenReady = false
+                        Log.e("TAG", "onPageSelected: playWhenReady false "+position )
+                    }
+                    val newIndex = exoplayerItems.indexOfFirst { it.position == position }
+                    if (newIndex != -1){
+                        val player = exoplayerItems[newIndex].exoplayer
+                        player.playWhenReady = true
+//                    player.play()
+                        player.pause()
+                        Log.e("TAG", "onPageSelected: view pager  play "+position )
+                    }
+                }
+            })*/
 
         }
     }
@@ -39,41 +71,18 @@ class NestedAdapter(var list: ArrayList<String>, var context: Context) : Recycle
     }
 
     override fun onBindViewHolder(holder: VideoHolder, position: Int) {
-        holder.bind(list.get(position))
+        holder.bind(list.get(position).comment,list.get(position).videolist)
 
-        inti(holder.binding)
+        //inti(holder.binding,list.get(position).videolist)
+        inti(list.get(position).videolist,holder.binding)
 
     }
 
-    private fun inti(binding: NestedLayoutBinding) {
-        videos.clear()
-        videos.add(
-            Video(
-                "my code","https://www.statuslagao.com/whatsapp/videos/hanuman/hanuman-status-002.mp4"
-            )
-        )
-        videos.add(
-            Video(
-                "my code","https://www.statuslagao.com/whatsapp/videos/hanuman/hanuman-status-002.mp4"
-            )
-        )
-        videos.add(
-            Video(
-                "my code","https://www.statuslagao.com/whatsapp/videos/hanuman/hanuman-status-002.mp4"
-            )
-        )
-        videos.add(
-            Video(
-                "my code","https://www.statuslagao.com/whatsapp/videos/hanuman/hanuman-status-002.mp4"
-            )
-        )
-        videos.add(
-            Video(
-                "my code","https://www.statuslagao.com/whatsapp/videos/hanuman/hanuman-status-002.mp4"
-            )
-        )
-
-        adapter = VideoAdapter(context,videos,object : VideoAdapter.OnVideoPreparedListner{
+    private fun inti(
+        videolist: ArrayList<Video>,
+        binding: NestedLayoutBinding
+    ) {
+       adapter = VideoAdapter(context,videolist,object : VideoAdapter.OnVideoPreparedListner{
             override fun onVideoPrepared(exoPlayerItem: VideoAdapter.ExoplayerItem) {
                 exoplayerItems.add(exoPlayerItem)
             }
@@ -101,11 +110,8 @@ class NestedAdapter(var list: ArrayList<String>, var context: Context) : Recycle
             }
         })
 
-        binding.viewpager2.adapter.let {
 
-        }
     }
-
     override fun onViewDetachedFromWindow(holder: VideoHolder) {
         super.onViewDetachedFromWindow(holder)
         if (exoplayerItems.isNotEmpty()){
