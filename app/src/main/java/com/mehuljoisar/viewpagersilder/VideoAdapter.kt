@@ -1,11 +1,10 @@
 package com.mehuljoisar.viewpagersilder
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.*
-import android.widget.LinearLayout
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -16,6 +15,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.mehuljoisar.viewpagersilder.databinding.ParentLayoutBinding
 import com.mehuljoisar.viewpagersilder.model.Video
+
 
 class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  videoPreparedListner: OnVideoPreparedListner) :
     RecyclerView.Adapter<VideoAdapter.VideoVideoHolder>() {
@@ -48,15 +48,18 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
             exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
 
             val dataSource = DefaultDataSource.Factory(context)
-            mediaSource = ProgressiveMediaSource.Factory(dataSource)
-                .createMediaSource(MediaItem.fromUri(Uri.parse(url)))
+            mediaSource = ProgressiveMediaSource.Factory(dataSource).createMediaSource(MediaItem.fromUri(Uri.parse(url)))
 
             exoPlayer.setMediaSource(mediaSource)
             exoPlayer.prepare()
 
             if (absoluteAdapterPosition == 0) {
                 exoPlayer.playWhenReady = true
-                exoPlayer.play()
+//                exoPlayer.play()
+                exoPlayer.pause()
+            }else{
+                exoPlayer.playWhenReady = false
+                exoPlayer.pause()
             }
 
             videoPreparedListner.onVideoPrepared(ExoplayerItem(exoPlayer,absoluteAdapterPosition))
@@ -75,7 +78,7 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
 
     }
 
-    override fun onBindViewHolder(holder: VideoVideoHolder, position: Int) {
+    override fun onBindViewHolder(holder: VideoVideoHolder, @SuppressLint("RecyclerView") position: Int) {
         val model = videos[position]
         holder.setVideoPath(model.url)
         holder.binding.playerview.setOnClickListener(){
@@ -91,8 +94,8 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
                         } else {
                             player.playWhenReady = false
                         }*/
-
                         holder.binding.playerview.player!!.playWhenReady = holder.binding.playerview.player!=null
+
 
                         return true
                     }
@@ -107,6 +110,13 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
             })
         }
     }
+    /*override fun onViewRecycled(holder: VideoVideoHolder) {
+        val position: Int = holder.adapterPosition
+        if (holder.binding.playerview.player != null) {
+            holder.binding.playerview.player?.release()
+        }
+        super.onViewRecycled(holder)
+    }*/
 
     interface OnVideoPreparedListner {
         fun onVideoPrepared(exoPlayerItem: ExoplayerItem)
@@ -116,4 +126,5 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
         var exoplayer: ExoPlayer,
         var position:Int) {
     }
+
 }

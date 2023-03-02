@@ -29,6 +29,11 @@ class NestedRecyclerviewActivity : AppCompatActivity() {
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         binding.recyclerview.adapter = adapter
 
+        binding.recyclerview.setRecyclerListener {
+
+        }
+
+
 
     }
 }
