@@ -118,6 +118,7 @@ class NestedAdapter(var list: ArrayList<sampleDataModel>, var context: Context) 
             for (i in exoplayerItems){
                 val player = i.exoplayer
                 player.pause()
+//                player.stop()
 //                player.release()
 //                player.clearMediaItems()
             }

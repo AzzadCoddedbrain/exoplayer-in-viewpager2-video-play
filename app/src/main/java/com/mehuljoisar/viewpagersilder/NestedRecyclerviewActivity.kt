@@ -20,17 +20,6 @@ class NestedRecyclerviewActivity : AppCompatActivity() {
         binding = ActivityNestedRecyclerviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val list = ArrayList<String>()
-
-        list.add("this is test")
-        list.add("this is test")
-        list.add("this is test")
-        list.add("this is test")
-        list.add("this is test")
-        list.add("this is test")
-
-
-
 
         var sublist  = ArrayList<Video>()
         var sublist1  = ArrayList<Video>()
@@ -64,11 +53,12 @@ class NestedRecyclerviewActivity : AppCompatActivity() {
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         binding.recyclerview.adapter = adapter
 
-        binding.recyclerview.setRecyclerListener {
-
-        }
-
-
 
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
 }
