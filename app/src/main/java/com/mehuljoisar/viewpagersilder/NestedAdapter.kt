@@ -112,6 +112,8 @@ class NestedAdapter(var list: ArrayList<sampleDataModel>, var context: Context) 
             player.play()
         }
         Toast.makeText(context, "resume", Toast.LENGTH_SHORT).show()
+
+
     }
 
 }
