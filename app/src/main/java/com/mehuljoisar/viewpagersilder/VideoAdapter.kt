@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -22,10 +23,7 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
     private lateinit var mediaSource: MediaSource
     class VideoVideoHolder(var binding: ParentLayoutBinding, var context: Context,var videoPreparedListner: OnVideoPreparedListner):
         RecyclerView.ViewHolder(binding.root) {
-
-
-
-        fun setVideoPath(url: String) {
+        fun     setVideoPath(url: String) {
             /*exoPlayer = ExoPlayer.Builder(context).build()
             exoPlayer.addListener(object : Player.Listener {
 
@@ -152,7 +150,7 @@ class VideoAdapter(var context: Context, var videos: ArrayList<Video>,var  video
 
         videoPreparedListner.onVideoPrepared(ExoplayerItem(exoPlayer,absoluteAdapterPosition))
     }
-    /*override fun onViewRecycled(holder: VideoVideoHolder) {
+  /*  override fun onViewRecycled(holder: VideoVideoHolder) {
         val position: Int = holder.adapterPosition
         if (holder.binding.playerview.player != null) {
             holder.binding.playerview.player?.release()

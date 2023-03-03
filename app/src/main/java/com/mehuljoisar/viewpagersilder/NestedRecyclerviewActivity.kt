@@ -12,7 +12,7 @@ import com.mehuljoisar.viewpagersilder.model.sampleDataModel
 class NestedRecyclerviewActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityNestedRecyclerviewBinding
-
+    lateinit var  adapter : NestedAdapter
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,16 +49,31 @@ class NestedRecyclerviewActivity : AppCompatActivity() {
             data.add(sampleDataModel("Are You Looking For Ladu Gopal Status Video :- Laddu Gopal Temple 4k Status Video, Laddu Gopal Making Full Screen Status Video, Laddu Gopal Shringar Short Status Video, Laddu Gopal Dialogue Status Video, Laddu Gopal Motivation Status Video, Laddu Gopal Love Status Video, Laddu Gopal Romantic 30sec Status Video, Lord Laddu Gopal Ultra HD Status Video, So Just Go And Download Your Favourite Video Which One You Liked Most And Put It On Your Facebook And Whatsapp Status Video. And Also, Don’t Forget To Share This Content With Your Friends, Family And Loving One.",sublist2))
 
 
-        val adapter = NestedAdapter(data,this)
+        adapter = NestedAdapter(data,this)
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         binding.recyclerview.adapter = adapter
 
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        adapter.onPauseAllVideo()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.onPauseAllVideo()
+    }
+    override fun onResume() {
+        super.onResume()
+        adapter.onResumeAllVideo()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-
+        adapter.onPauseAllVideo()
+//        adapter.onViewDetachedFromWindow(binding.recyclerview)
     }
 
 }
