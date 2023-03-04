@@ -8,14 +8,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.mehuljoisar.viewpagersilder.VideoAdapter
 import com.mehuljoisar.viewpagersilder.databinding.NestedLayoutBinding
 import com.mehuljoisar.viewpagersilder.model.Video
-import com.mehuljoisar.viewpagersilder.model.sampleDataModel
+import com.mehuljoisar.viewpagersilder.model.FeedDataModel
 
-class NestedAdapter(var list: ArrayList<sampleDataModel>, var context: Context) : RecyclerView.Adapter<NestedAdapter.VideoHolder>() {
+class NestedAdapter(var list: ArrayList<FeedDataModel>, var context: Context) : RecyclerView.Adapter<NestedAdapter.VideoHolder>() {
 
-    lateinit var binding: NestedLayoutBinding
     lateinit var adapter: VideoAdapter
      val exoplayerItems= ArrayList<VideoAdapter.ExoplayerItem>()
-
     class VideoHolder(var binding: NestedLayoutBinding) : RecyclerView.ViewHolder(binding.root)  {
         fun bind(word: String, videolist: ArrayList<Video>) {
             binding.textView.text = word
@@ -33,10 +31,10 @@ class NestedAdapter(var list: ArrayList<sampleDataModel>, var context: Context) 
 
     override fun onBindViewHolder(holder: VideoHolder, position: Int) {
         holder.bind(list.get(position).comment,list.get(position).videolist)
-        inti(list.get(position).videolist,holder.binding)
+        inti(list.get(position).videolist,holder.binding,position)
     }
 
-    private fun inti(videolist: ArrayList<Video>, binding: NestedLayoutBinding) {
+    private fun inti(videolist: ArrayList<Video>, binding: NestedLayoutBinding, position: Int) {
        adapter = VideoAdapter(context,videolist,object : VideoAdapter.OnVideoPreparedListner{
             override fun onVideoPrepared(exoPlayerItem: VideoAdapter.ExoplayerItem) {
                 exoplayerItems.add(exoPlayerItem)
@@ -58,37 +56,32 @@ class NestedAdapter(var list: ArrayList<sampleDataModel>, var context: Context) 
                 if (newIndex != -1){
                     val player = exoplayerItems[newIndex].exoplayer
                     player.playWhenReady = true
-//                    player.play()
                     player.pause()
                     Log.e("TAG", "onPageSelected: view pager  play "+position )
                 }
             }
         })
 
-
     }
+
     override fun onViewDetachedFromWindow(holder: VideoHolder) {
         super.onViewDetachedFromWindow(holder)
         if (exoplayerItems.isNotEmpty()){
             for (i in exoplayerItems){
                 val player = i.exoplayer
                 player.pause()
-//                player.stop()
-//                player.release()
-//                player.clearMediaItems()
             }
         }
     }
-
 
     override fun onViewAttachedToWindow(holder: VideoHolder) {
         super.onViewAttachedToWindow(holder)
         val index = exoplayerItems.indexOfFirst { it.position==holder.binding.viewpager2.currentItem }
         if (index != -1){
             val player = exoplayerItems[index].exoplayer
-            player.playWhenReady = true
-            player.play()
-//            player.pause()
+//            player.playWhenReady = true
+//            player.play() // auto play
+            player.pause() // not auot play
             Log.e("TAG", "onViewAttachedToWindow: -- > play "+holder.position )
         }
     }
@@ -112,8 +105,9 @@ class NestedAdapter(var list: ArrayList<sampleDataModel>, var context: Context) 
             player.play()
         }
         Toast.makeText(context, "resume", Toast.LENGTH_SHORT).show()
-
-
     }
+
+
+
 
 }
